@@ -8,7 +8,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { VueLoaderPlugin } = require('vue-loader')
 const webpack = require('webpack')
 module.exports = {
-    entry: path.join(__dirname, '../src/index.ts'),//入口文件
+    entry: path.join(__dirname, '../src/main.ts'),//入口文件
     output: {
         filename: 'static/js/[name].[chunkhash:8].js',//输出的js名称
         path: path.join(__dirname, '../dist'),
@@ -25,7 +25,7 @@ module.exports = {
             },
             {
                 test: /\.css$/,
-                include: [path.resolve(__dirname, '../src')],
+                // include: [path.resolve(__dirname, '../src')],
                 use: ['style-loader', 'css-loader', 'less-loader', 'postcss-loader']
             },
             {
@@ -44,7 +44,23 @@ module.exports = {
                 generator: {
                     filename: 'static/images/[name].[contenthash:8][ext]'
                 }
-            }
+            },
+            {
+                test: /\.ts$/, // 匹配.ts文件
+                use: {
+                  loader: 'babel-loader',
+                  options: {
+                    presets: [
+                      [
+                        "@babel/preset-typescript",
+                        {
+                          allExtensions: true, //支持所有文件扩展名(重要)
+                        },
+                      ],
+                    ]
+                  }
+                }
+              }
         ]
     },
     cache: {
@@ -53,9 +69,7 @@ module.exports = {
     resolve: {
         alias: {
             '@': path.join(__dirname, '../src')
-        }
-    },
-    resolve: {
+        },
         extensions: ['.vue', '.ts', '.js', '.json']//这里只配置js, vue和ts和json，其他文件引入都要求带后缀，可以提升构建速度。
     },
     plugins: [

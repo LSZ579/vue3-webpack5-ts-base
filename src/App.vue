@@ -1,5 +1,5 @@
 <template>
-    <h2>webpack5-vue3-ts</h2>
+    <router-view></router-view>
 </template>
   
 <script setup lang="ts">
